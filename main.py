@@ -73,5 +73,6 @@ class VCFExtractor():
 
 if __name__ == '__main__':
     mon_extractor = VCFExtractor()
+    mon_extractor.read_vcf()
 
-    test.df()
+    mon_extractor.df
