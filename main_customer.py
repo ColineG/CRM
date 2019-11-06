@@ -1,11 +1,9 @@
-import io
-import os
 import pandas as pd
 from config import Config, config
 import vobject
 
 
-class VCFExtractor():
+class CUSTOMERSExtractor():
     def __init__(self, config):
         self.param = Config(config)
         self.df = None
@@ -18,7 +16,6 @@ class VCFExtractor():
         elif type(value.value) is bytes:
             dict_dest[f"{key}_{num}"] = value.value
         else:
-            #print(value.value.__dict__)
             for key2 in value.value.__dict__.keys():
                 dict_dest[f"{key}_{num}_{key2}"] = value.value.__dict__[key2]
         return dict_dest
@@ -30,26 +27,7 @@ class VCFExtractor():
 
         diosf = {}
         aaaa = []
-        #pk on parcours le generateur ici ? ça le vide, et donc dans la loop en dessous, y'a rien
-        #Tu peux l'enlever en dessous
-        """
-        for i, contact in enumerate(vcf_contacts):
-            for key in contact.contents.keys():
-                for k, value in enumerate(contact.contents[key]):
-                    if key in diosf:
-                        pass
-                    else:
-                        diosf[key] = {}
-                    try:
-                        les_clef = value.value.__dict__.keys()
-                        for x in les_clef:
-                            if x in diosf[key]:
-                                pass
-                            else:
-                                diosf[key][x] = type(x)
-                    except:
-                        diosf[key] = type(value.value)
-        """
+
         for i, contact in enumerate(vcf_contacts):
             print(i)
             diosf = {}
@@ -57,14 +35,12 @@ class VCFExtractor():
                 for k, value in enumerate(contact.contents[key]):
                     diosf = self.explore(value, key, diosf, k)
             aaaa.append(diosf)
-            #print()
-            #print()
 
         self.df = pd.DataFrame(aaaa)
 
 
 if __name__ == '__main__':
-    mon_extractor = VCFExtractor(config)
+    mon_extractor = CUSTOMERSExtractor(config)
     mon_extractor.read_vcf2()
     df = mon_extractor.df
 
@@ -108,7 +84,9 @@ if __name__ == '__main__':
     },
         inplace=True)
 
-    df = df[['last_name',
+# Modify columns position in the dataframe
+    df = df[[
+        'last_name',
         'first_name',
         'job_title_0',
         'job_title_1',
@@ -135,5 +113,13 @@ if __name__ == '__main__':
         'label_1',
         'label_2',
         'label_3']]
+
+# Add a status column in the dataframe to specified it
+    df['status'] = 'customer'
+
+# Rename df into df_customer
+    df_customer = df
+
+
 
     df.to_csv('clients.csv', index=True)
