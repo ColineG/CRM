@@ -2,7 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from sqlalchemy_utils import PhoneNumber
 from app import routes, models
-
+from app import app
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -94,7 +94,8 @@ class Historic(db.Model):
 class Label(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     contact_id = db.Column(db.Integer, db.ForeignKey('contact.id'))
-    label_0 =
-    label_1 =
-    label_2 =
-    label_3 =
+    label_0 = db.Column(db.String(120))
+    label_1 = db.Column(db.String(120))
+    label_2 = db.Column(db.String(120))
+    label_3 = db.Column(db.String(120))
+

@@ -3,21 +3,31 @@ from config import Config, config
 import vobject
 
 
-class CUSTOMERSExtractor():
+class CustomerExtractor:
+    """
+        Création d'une class qui permette l'extraction des metadata du fichier .vcf pour pouvoir exploiter la donnée.
+
+    """
     def __init__(self, config):
-        self.param = Config(config)
+        #TODO au lieu de filer config, tu peux filer un param qui est path
+        self.param = config
         self.df = None
 
+    #TODO revoir la logique de génération de nom de colonne, pour éviter ensuite le renommage en dur
     def explore(self, value, key, dict_dest, num):
-        if type(value.value) is str:
-            dict_dest[f"{key}_{num}"] = value.value
-        elif type(value.value) is list:
-            dict_dest[f"{key}_{num}"] = value.value
-        elif type(value.value) is bytes:
-            dict_dest[f"{key}_{num}"] = value.value
+        """
+        Création d'une méthode qui permette d'explorer le format .vcf
+        :param value: correspond à la valeur contenu dans la clé. Ici il s'agit d'un str, list, bytes ou dict.
+        :param key: correspond à la clé de la valeur.
+        :param dict_dest: création d'un dictionnaire pour rassembler la donnée et la rendre plus exploitable
+        :param num:
+        :return:
+        """
+        if type(value.value) in (str, list, bytes):
+            dict_dest[key] = value.value
         else:
-            for key2 in value.value.__dict__.keys():
-                dict_dest[f"{key}_{num}_{key2}"] = value.value.__dict__[key2]
+            #for key2 in value.value.__dict__.keys():
+            dict_dest[f"{key}"] = value.value.__dict__
         return dict_dest
 
     def read_vcf2(self):
@@ -27,7 +37,6 @@ class CUSTOMERSExtractor():
 
         diosf = {}
         aaaa = []
-
         for i, contact in enumerate(vcf_contacts):
             print(i)
             diosf = {}
@@ -36,11 +45,13 @@ class CUSTOMERSExtractor():
                     diosf = self.explore(value, key, diosf, k)
             aaaa.append(diosf)
 
-        self.df = pd.DataFrame(aaaa)
+        #self.df = pd.DataFrame(aaaa)
+        self.json = aaaa
 
 
 if __name__ == '__main__':
-    mon_extractor = CUSTOMERSExtractor(config)
+    param = Config(config)
+    mon_extractor = CustomerExtractor(param.clients)
     mon_extractor.read_vcf2()
     df = mon_extractor.df
 

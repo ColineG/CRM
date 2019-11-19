@@ -7,9 +7,11 @@ import vobject
 
 class PROSPECTExtractor():
     def __init__(self, config):
+        # TODO au lieu de filer config, tu peux filer un param qui est path
         self.param = Config(config)
         self.df = None
 
+    # TODO revoir la logique de génération de nom de colonne, pour éviter ensuite le renommage en dur
     def explore(self, value, key, dict_dest, num):
         if type(value.value) is str:
             dict_dest[f"{key}_{num}"] = value.value

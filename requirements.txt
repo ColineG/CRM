@@ -1,0 +1,8 @@
+pandas
+vobject
+flask_sqlalchemy
+flask_migrate
+import os
+wtforms
+flask
+sqlalchemy
