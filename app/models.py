@@ -8,14 +8,14 @@ from config import Config, config, FlaskConfig
 from app import db
 
 # create an engine
-conf = config(FlaskConfig)
+conf = FlaskConfig()
 db = create_engine(conf.DATABASE_URL)
 base = declarative_base()
 
 # configuration
 
 
-class Email(db.Model):
+class Email(base):
     __tablename__ = 'email'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -28,7 +28,7 @@ class Email(db.Model):
         return '<Email {}>'.format(self.email)
 
 
-class Fn(db.Model):
+class Fn(base):
     __tablename__ = 'company'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -39,7 +39,7 @@ class Fn(db.Model):
         return '<Fn {}>'.format(self.company_name)
 
 
-class N(db.Model):
+class N(base):
     __tablename__ = 'contact'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -53,7 +53,7 @@ class N(db.Model):
         return '<N {}>'.format(self.last_name)
 
 
-class Note(db.Model):
+class Note(base):
     __tablename__ = 'follow_up'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -71,7 +71,7 @@ class Note(db.Model):
     #TBD
 
 
-class Phone(db.Model):
+class Phone(base):
     __tablename__ = 'phone'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
