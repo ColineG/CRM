@@ -1,7 +1,9 @@
 from sqlalchemy import create_engine, ForeignKey
 from sqlalchemy import Column, String, Integer
+from sqlalchemy.types import DateTime
 from sqlalchemy.dialects.postgresql import VARCHAR, ENUM
 from sqlalchemy_utils import EmailType
+from sqlalchemy.sql import func
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from config import Config, config, FlaskConfig
@@ -60,7 +62,7 @@ class Note(base):
     id_contact = Column(Integer, ForeignKey('contact.id'))
     id_company = Column(Integer, ForeignKey('company.id'))
     note = Column(VARCHAR())
-    created_at = Column(DateTime, default=unc.now())
+    created_at = Column(DateTime, server_default=func.now())
     deleted_at = Column(DateTime)
 
     def __repr__(self):
