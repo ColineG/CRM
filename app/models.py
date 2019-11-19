@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine, ForeignKey
 from sqlalchemy import Column, String, Integer
-from sqlalchemy.dialects.postgresql import VARCHAR
+from sqlalchemy.dialects.postgresql import VARCHAR, ENUM
 from sqlalchemy_utils import EmailType
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -47,7 +47,7 @@ class N(base):
     first_name = Column(String(255))
     prefix = Column(String(255))
     id_company = Column(Integer, ForeignKey('company.id'))
-    contact_status = db.Column(db.Enum('Client', 'Prospect', 'Churn'))
+    contact_status = Column(ENUM('Client', 'Prospect', 'Churn'))
 
     def __repr__(self):
         return '<N {}>'.format(self.last_name)
@@ -60,8 +60,8 @@ class Note(base):
     id_contact = Column(Integer, ForeignKey('contact.id'))
     id_company = Column(Integer, ForeignKey('company.id'))
     note = Column(VARCHAR())
-    created_at = db.Column(db.DateTime, default=db.func.now())
-    deleted_at = db.Column(db.DateTime)
+    created_at = Column(DateTime, default=unc.now())
+    deleted_at = Column(DateTime)
 
     def __repr__(self):
         return '<Note {}>'.format(self.note)
