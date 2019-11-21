@@ -2,7 +2,7 @@ pandas
 vobject
 flask_sqlalchemy
 flask_migrate
-import os
+os
 wtforms
 flask
 sqlalchemy
